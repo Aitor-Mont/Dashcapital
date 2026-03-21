@@ -130,6 +130,20 @@ export class LandingComponent {
             return;
         }
 
+        // Mock admin check
+        if (this.email === 'admin' && this.password === '1234') {
+            try {
+                const result = await this.authService.signInAsAdmin();
+                if (result.error) throw result.error;
+                this.isLoading.set(false);
+                return;
+            } catch (err: any) {
+                this.errorMessage.set(err.message || 'Error occurred during admin login');
+                this.isLoading.set(false);
+                return;
+            }
+        }
+
         if (!this.validateEmail(this.email)) {
             this.errorMessage.set('Please enter a valid email address');
             this.isLoading.set(false);

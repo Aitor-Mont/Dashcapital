@@ -111,6 +111,37 @@ export class AuthService {
         });
     }
 
+    /**
+     * Mock sign in for admin/1234
+     */
+    async signInAsAdmin() {
+        // Mock user object
+        const mockUser: any = {
+            id: 'admin-id',
+            email: 'admin@dashcapital.inc',
+            user_metadata: { full_name: 'Administrator' },
+            email_confirmed_at: new Date().toISOString()
+        };
+
+        const mockSession: any = {
+            access_token: 'mock-token',
+            refresh_token: 'mock-refresh-token',
+            expires_in: 3600,
+            token_type: 'bearer',
+            user: mockUser
+        };
+
+        this.user.set(mockUser);
+        this.session.set(mockSession);
+        this.isEmailVerified.set(true);
+        this.isLoading.set(false);
+
+        // Notify router to navigate
+        this.router.navigate(['/dashboard']);
+        
+        return { data: { user: mockUser, session: mockSession }, error: null };
+    }
+
     async signOut() {
         await this.supabase.auth.signOut();
     }
