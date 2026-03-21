@@ -18,7 +18,7 @@ interface NavItem {
       <!-- Logo -->
       <div class="sidebar-logo">
         <div class="logo-icon">
-             <img src="/assets/images/logo-prisma.png" alt="Prisma Logo" style="width: 100%; height: auto;">
+             <img src="/assets/images/dashcapital-logo.png" alt="Dashcapital Logo" style="width: 100%; height: auto;">
         </div>
       </div>
 

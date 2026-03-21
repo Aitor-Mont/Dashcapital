@@ -36,5 +36,5 @@ import { SidebarComponent } from './shared/components/sidebar/sidebar.component'
   `]
 })
 export class App {
-  title = 'Prisma Dashboard';
+  title = 'Dashcapital Dashboard';
 }
