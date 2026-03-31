@@ -123,75 +123,16 @@ export class LandingComponent {
         this.errorMessage.set('');
         this.successMessage.set('');
 
-        // Basic validation
-        if (!this.email || !this.password) {
-            this.errorMessage.set('Please fill in all fields');
-            this.isLoading.set(false);
-            return;
-        }
-
-        // Mock admin check
-        if (this.email === 'admin' && this.password === '1234') {
-            try {
-                const result = await this.authService.signInAsAdmin();
-                if (result.error) throw result.error;
-                this.isLoading.set(false);
-                return;
-            } catch (err: any) {
-                this.errorMessage.set(err.message || 'Error occurred during admin login');
-                this.isLoading.set(false);
-                return;
-            }
-        }
-
-        if (!this.validateEmail(this.email)) {
-            this.errorMessage.set('Please enter a valid email address');
-            this.isLoading.set(false);
-            return;
-        }
-
-        if (!this.isLogin() && this.password.length < 6) {
-            this.errorMessage.set('Password must be at least 6 characters');
-            this.isLoading.set(false);
-            return;
-        }
-
+        // Accept any email/password, even if empty, and mock login
         try {
-            if (this.isLogin()) {
-                const { error } = await this.authService.signIn(this.email, this.password);
-                if (error) throw error;
-                // Navigation is handled by AuthService
-            } else {
-                const result = await this.authService.signUp(this.email, this.password);
-                if (result.error) throw result.error;
-
-                if (result.needsEmailConfirmation) {
-                    // Show verification pending state
-                    this.pendingEmail.set(this.email);
-                    this.showVerificationPending.set(true);
-                    this.email = '';
-                    this.password = '';
-                } else {
-                    // Auto-confirmed or auto-login
-                    this.successMessage.set('Registration successful! You are now logged in.');
-                }
-            }
-        } catch (err: any) {
-            console.error('Auth error:', err);
-            // Provide user-friendly error messages
-            let message = err.message || 'An unexpected error occurred';
-
-            if (message.includes('Invalid login credentials')) {
-                message = 'Invalid email or password. Please try again.';
-            } else if (message.includes('Email not confirmed')) {
-                message = 'Please verify your email before signing in.';
-            } else if (message.includes('User already registered')) {
-                message = 'An account with this email already exists. Try signing in instead.';
-            }
-
-            this.errorMessage.set(message);
-        } finally {
+            const result = await this.authService.signInAsAdmin();
+            if (result.error) throw result.error;
             this.isLoading.set(false);
+            return;
+        } catch (err: any) {
+            this.errorMessage.set(err.message || 'Error occurred during login');
+            this.isLoading.set(false);
+            return;
         }
     }
 }
